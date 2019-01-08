@@ -34,7 +34,7 @@ fn main() {
     let five_hundred = tup.0;
 
     let ar = [1, 2, 3, 4, 5];
-    let index = 10;
+    let index = 4;
     let element = ar[index];
 
     println!("The value of element is: {}", element);

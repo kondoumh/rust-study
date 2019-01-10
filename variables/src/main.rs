@@ -48,6 +48,24 @@ fn main() {
 
     let x = five();
     println!("The value of x is {}", x);
+
+    let condition = true;
+    let number = if condition {
+        5
+    } else {
+        6
+    };
+    println!("Tha value of number is: {}", number);
+
+    let ar = [10, 20, 30, 40, 50];
+    for element in ar.iter() {
+        println!("The value is: {}", element);
+    }
+
+    for number in (1..4).rev() {
+        println!("{}!", number);
+    }
+    println!("LIFTOFF!!!")
 }
 
 fn five() -> i32 {

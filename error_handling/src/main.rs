@@ -18,4 +18,7 @@ fn main() {
             panic!("There was a problem opening the file: {:?}", error)
         },
     };
+
+    //let f = File::open("hoge.txt").unwrap();
+    let f = File::open("hoge.txt").expect("Failed to open hoge.txt");
 }

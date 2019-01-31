@@ -32,7 +32,7 @@ struct Point2<T, U> {
 }
 
 impl<T, U> Point2<T, U> {
-    fn mixup<V, W>(self, other:Point<V, W>) -> Point<T, W> {
+    fn mixup<V, W>(self, other:Point2<V, W>) -> Point2<T, W> {
         Point2 {
             x: self.x,
             y: other.y,
@@ -51,10 +51,10 @@ fn main() {
 
     let ipt = Point { x: 5, y: 10 };
     let fpt = Point { x: 1.0, y: 4.0 };
-    println!("p.x = {}", p.x());
+    println!("fpt.x = {}", fpt.x());
 
     let p1 = Point2 { x: 5, y: 10.4 };
     let p2 = Point2 { x: "Hello", y: "c"};
-    pet p3 = p1.mixup(p2);
+    let p3 = p1.mixup(p2);
     println!("p3.x = {}, p3.y = {}", p3.x, p3.y);
 }

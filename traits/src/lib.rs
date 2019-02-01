@@ -1,5 +1,9 @@
 pub trait Summary {
-    fn summarize(&self) -> String;
+    fn summarize_author(&self) -> String;
+
+    fn summarize(&self) -> String {
+        format!("(Read more from {}...", self.summarize_author())
+    }
 }
 
 pub struct NewsArticle {
@@ -10,6 +14,9 @@ pub struct NewsArticle {
 }
 
 impl Summary for NewsArticle {
+    fn summarize_author(&self) -> String {
+        format!("{}", self.author)
+    }
     fn summarize(&self) -> String {
         format!("{}, by {} ({})", self.headline, self.author, self.location)
     }
@@ -23,8 +30,8 @@ pub struct Tweet {
 }
 
 impl Summary for Tweet {
-    fn summarize(&self) -> String {
-        format!("{}: {}", self.username, self.content)
+    fn summarize_author(&self) -> String {
+        format!("@{}", self.username)
     }
 }
 
@@ -40,7 +47,6 @@ mod tests {
             reply: false,
             retweet: false,
         };
-        println!("1 new tweet: {}", tweet.summarize());
-        assert_eq!(tweet.summarize(), "horse_ebooks: of course, as you probably already know, peaple");
+        assert_eq!(tweet.summarize(), "(Read more from @horse_ebooks...");
     }
 }

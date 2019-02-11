@@ -30,3 +30,28 @@ pub fn run(config: Config) -> Result<(), Box<Error>> {
 
     Ok(())
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn new_config() {
+        let args = [String::from("program"), String::from("word"), String::from("filename")];
+        let config = Config::new(&args[..]).unwrap();
+        assert_eq!(config.query, "word");
+        assert_eq!(config.filename, "filename");
+    }
+
+    #[test]
+    fn config_param_error() {
+        let args = [String::from("program"), String::from("word")];
+        match Config::new(&args[..]) {
+            Ok(_) => assert!(false),
+            Err(e) => {
+                assert!(true);
+                assert!(e.contains("not enough"));
+            }
+        }
+    }
+}

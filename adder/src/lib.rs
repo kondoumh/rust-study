@@ -1,3 +1,17 @@
+//! # adder
+//!
+//! `adder` is a collection of utilities to make performing certain
+//! calculations more convenient.
+
+/// Adds two to number given
+/// 
+/// # Examples
+///
+/// ```
+/// let five = 5;
+///
+/// assert_eq!(7, adder::add_two(five));
+/// ```
 pub fn add_two(a: i32) -> i32 {
     a + 2
 }

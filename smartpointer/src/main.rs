@@ -3,7 +3,7 @@ enum List {
     Nil,
 }
 
-// use List::{Cons, Nil};
+use List::{Cons, Nil};
 
 use std::ops::Deref;
 
@@ -37,10 +37,10 @@ fn main() {
     let b = Box::new(5);
     println!("b = {}", b);
 
-    // let list = Cons(1,
-    //     Box::new(Cons(2,
-    //         Box::new(Cons(3,
-    //             Box::new(Nil))))));
+    let list = Cons(1,
+        Box::new(Cons(2,
+            Box::new(Cons(3,
+                Box::new(Nil))))));
 
     let x = 5;
     let y = &x;
@@ -62,6 +62,12 @@ fn main() {
     println!("CustomSmartPointer created");
     drop(c);
     println!("CustomSmartPointer dropped before the end of main.");
+
+    // let a = Cons(5,
+    //     Box::new(Cons(10,
+    //         Box::new(Nil))));
+    // let b = Cons(3, Box::new(a));
+    // let c = Cons(4, Box::new(a));
 }
 
 fn hello(name: &str) {

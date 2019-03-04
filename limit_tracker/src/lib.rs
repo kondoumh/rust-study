@@ -45,7 +45,7 @@ mod tests {
         }
     }
 
-    impl for MockMessenger {
+    impl Messenger for MockMessenger {
         fn send(&self, message: &str) {
             self.sent_messages.push(String::from(message));
         }

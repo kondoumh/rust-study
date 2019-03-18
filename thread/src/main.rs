@@ -17,4 +17,10 @@ fn main() {
     }
 
     handle.join().unwrap();
+
+    let v = vec![1, 2, 3];
+    let handle2 = thread::spawn(move || {
+        println!("Here's a vector: {:?}", v);
+    });
+    handle2.join().unwrap();
 }

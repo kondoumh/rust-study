@@ -45,5 +45,7 @@ mod tests {
         collection.add(5);
         collection.add(10);
         assert_eq!(collection.average(), 7.5);
+        collection.remove();
+        assert_eq!(collection.average(), 5.0);
     }
 }

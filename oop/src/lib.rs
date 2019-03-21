@@ -32,9 +32,18 @@ impl AveragedCollection {
 
 
 #[cfg(test)]
+
 mod tests {
+    use super::*;
+
     #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
+    fn test_averaged_collection() {
+        let mut collection = AveragedCollection {
+            list: vec![],
+            average: 0.0,
+        };
+        collection.add(5);
+        collection.add(10);
+        assert_eq!(collection.average(), 7.5);
     }
 }

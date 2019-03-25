@@ -35,6 +35,29 @@ fn main() {
 
     let point = (3, 5);
     print_coorinates(&point);
+
+    if let a = 5 {
+        println!("{}", a);
+    }
+
+    // match leteral
+    let x = 1;
+    match x {
+        1 => println!("one"),
+        2 => println!("two"),
+        3 => println!("three"),
+        _ => println!("anything"),
+    }
+
+    // match named variable
+    let x = Some(5);
+    let y = 10;
+    match x {
+        Some(50) => println!("Got 50"),
+        Some(y) => println!("Matched, y = {:?}", y),
+        _ => println!("Default case, x = {:?}", x),
+    }
+    println!("at the end: x = {:?}, y = {:?}", x, y);
 }
 
 fn print_coorinates(&(x, y): &(i32, i32)) {

@@ -1,3 +1,9 @@
+use std::slice;
+
+extern "C" {
+    fn abs(input: i32) -> i32;
+}
+
 fn main() {
     let mut num = 5;
     let r1 = &num as *const i32;
@@ -20,6 +26,21 @@ fn main() {
     let (a, b) = r.split_at_mut(3);
     assert_eq!(a, &mut [1, 2, 3]);
     assert_eq!(b, &mut [4, 5, 6]);
+
+    unsafe {
+        println!("Absolute value of -3 according to C: {}", abs(-3));
+    }
 }
 
 unsafe fn dangerous() {}
+
+// function version
+fn split_at_mut(slice: &mut [i32], mid: usize) -> (&mut [i32], &mut [i32]) {
+    let len = slice.len();
+    let ptr = slice.as_mut_ptr();
+    assert!(mid <= len);
+    unsafe {
+        (slice::from_raw_parts_mut(ptr, mid), 
+         slice::from_raw_parts_mut(ptr.offset(mid as isize), len - mid))
+    }
+}

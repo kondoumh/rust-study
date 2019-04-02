@@ -4,6 +4,10 @@ extern "C" {
     fn abs(input: i32) -> i32;
 }
 
+static HELLO_WORLD: &str = "Hello, world!";
+
+static mut COUNTER: u32 = 0;
+
 fn main() {
     let mut num = 5;
     let r1 = &num as *const i32;
@@ -30,6 +34,13 @@ fn main() {
     unsafe {
         println!("Absolute value of -3 according to C: {}", abs(-3));
     }
+
+    println!("name is: {}", HELLO_WORLD);
+
+    add_to_count(3);
+    unsafe {
+        println!("COUNTER: {}", COUNTER);
+    }
 }
 
 unsafe fn dangerous() {}
@@ -42,5 +53,11 @@ fn split_at_mut(slice: &mut [i32], mid: usize) -> (&mut [i32], &mut [i32]) {
     unsafe {
         (slice::from_raw_parts_mut(ptr, mid), 
          slice::from_raw_parts_mut(ptr.offset(mid as isize), len - mid))
+    }
+}
+
+fn add_to_count(inc: u32) {
+    unsafe {
+        COUNTER += inc;
     }
 }

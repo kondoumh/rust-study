@@ -14,10 +14,23 @@ fn parse_context(context: Context) -> Result<(), &str> {
     Parser { context: &context }.parse()
 }
 
+struct Ref<'a, T: 'a>(&'a T);
+struct StaticRef<T: 'static>(&'static T);
+
+trait Red { }
+
+struct Ball<'a> {
+    diameter: &'a i32,
+}
+
+impl<'a> Red for Ball<'a> { }
+
 #[cfg(test)]
 mod tests {
+    use super::*;
     #[test]
     fn it_works() {
-        assert_eq!(2 + 2, 4);
+        let num = 5;
+        let obj = Box::new(Ball {diameter: &num }) as Box<Red>;
     }
 }

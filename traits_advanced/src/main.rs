@@ -16,7 +16,21 @@ impl Add for Point {
     }
 }
 
+#[derive(Debug, PartialEq)]
+struct Millimeters(u32);
+#[derive(Debug, PartialEq)]
+struct Meters(u32);
+
+impl Add<Meters> for Millimeters {
+    type Output = Millimeters;
+    fn add(self, other: Meters) -> Millimeters {
+        Millimeters(self.0 + (other.0 * 1000))
+    }
+}
+
 fn main() {
     assert_eq!(Point { x: 1, y: 0} + Point { x: 2, y: 3},
                Point { x: 3, y: 3});
+
+    assert_eq!(Millimeters(200) + Meters(3), Millimeters(3200));
 }

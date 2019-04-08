@@ -56,6 +56,24 @@ impl Human {
     }
 }
 
+trait Animal {
+    fn baby_name() -> String;
+}
+
+struct Dog;
+
+impl Dog {
+    fn baby_name() -> String {
+        String::from("Spot")
+    }
+}
+
+impl Animal for Dog {
+    fn baby_name() -> String {
+        String::from("puppy")
+    }
+}
+
 fn main() {
     assert_eq!(Point { x: 1, y: 0} + Point { x: 2, y: 3},
                Point { x: 3, y: 3});
@@ -66,4 +84,6 @@ fn main() {
     Pilot::fly(&person);
     Wizard::fly(&person);
     person.fly();
+
+    println!("A baby dog is called a {}", <Dog as Animal>::baby_name());
 }

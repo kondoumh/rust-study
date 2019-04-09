@@ -8,4 +8,9 @@ fn main() {
     println!("x + y = {}", x + y);
 
     let f: Thunk = Box::new(|| println!("hi"));
+    takes_long_type(f);
+}
+
+fn takes_long_type(f: Thunk) {
+
 }

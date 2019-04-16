@@ -37,6 +37,17 @@ impl ThreadPool {
     }
 }
 
+impl Drop for ThreadPool {
+    fn drop(&mut self) {
+        for worker in &mut self.workers {
+            println!("Shutting down worker {}", worker.id);
+            if let Some(thread) = worker.thread.take() {
+                worker.thread.join().unwrap();
+            }
+        }
+    }
+}
+
 trait FnBox {
     fn call_box(self: Box<Self>);
 }
@@ -51,7 +62,7 @@ type Job = Box<FnBox + Send + 'static>;
 
 struct Worker {
     id: usize,
-    thread: thread::JoinHandle<()>,
+    thread: Option<thread::JoinHandle<()>>,
 }
 
 impl Worker {
@@ -66,7 +77,7 @@ impl Worker {
 
         Worker {
             id,
-            thread,
+            thread: Some(thread),
         }
     }
 }

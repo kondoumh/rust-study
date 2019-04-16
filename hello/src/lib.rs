@@ -8,18 +8,6 @@ pub struct ThreadPool {
     sender: mpsc::Sender<Job>,
 }
 
-trait FnBox {
-    fn call_box(self: Box<Self>);
-}
-
-impl<F: FnOnce()> FnBox for F {
-    fn call_box(self: Box<F>) {
-        (*self)()
-    }
-}
-
-type Job = Box<FnOnce() + Send + 'static>;
-
 impl ThreadPool {
     /// Create a new ThreadPool.
     /// The size is the number of thread in the pool.
@@ -48,6 +36,18 @@ impl ThreadPool {
         self.sender.send(job).unwrap();
     }
 }
+
+trait FnBox {
+    fn call_box(self: Box<Self>);
+}
+
+impl<F: FnOnce()> FnBox for F {
+    fn call_box(self: Box<F>) {
+        (*self)()
+    }
+}
+
+type Job = Box<FnBox + Send + 'static>;
 
 struct Worker {
     id: usize,

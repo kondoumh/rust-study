@@ -3,6 +3,10 @@
 A template for kick starting a Rust and WebAssembly project using
 [`wasm-pack`](https://github.com/rustwasm/wasm-pack).
 
+```
+$ curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+```
+
 [**📚 Read this template tutorial! 📚**][template-docs]
 
 This template is designed for compiling Rust libraries into WebAssembly and
@@ -17,6 +21,10 @@ templates and usages of `wasm-pack`.
 ## 🚴 Usage
 
 ### 🐑 Use `cargo generate` to Clone this Template
+
+```
+$ cargo install cargo-generate
+```
 
 [Learn more about `cargo generate` here.](https://github.com/ashleygwilliams/cargo-generate)
 

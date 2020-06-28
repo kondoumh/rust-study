@@ -37,6 +37,11 @@ fn printval<T: GeoCalculator>(poly: &T) {
     println!("{}", poly.length());
 }
 
+fn printval2(poly: &dyn GeoCalculator) {
+    println!("{}", poly.area());
+    println!("{}", poly.length());
+}
+
 fn main() {
     let tri = RightTriangle {
         base: 3.0,
@@ -48,5 +53,12 @@ fn main() {
         width: 3.0,
         height: 4.0,
     };
-    printval(&rec);
+    printval2(&rec);
+
+    let mut vv : Vec<&dyn GeoCalculator> = vec![];
+    vv.push(&tri);
+    vv.push(&rec);
+    for v in vv {
+        printval2(v);
+    }
 }

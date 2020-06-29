@@ -1,6 +1,6 @@
 use clap::{crate_authors, crate_version, App, Arg};
-use std::io::Read;
 use std::fs::File;
+use std::io::Read;
 use std::path::Path;
 
 fn main() {

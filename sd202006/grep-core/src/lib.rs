@@ -13,7 +13,7 @@ impl FixedStringsMatcher {
     }
 }
 impl MatcherTrait for FixedStringsMatcher {
-    fn execute(&self, line: &str) -> bool{
+    fn execute(&self, line: &str) -> bool {
         line.contains(&self.pattern)
     }
 }
@@ -36,7 +36,7 @@ impl MatcherTrait for ExtendedRegexMatcher {
 
 pub enum Matcher {
     ExtendedRegexp(ExtendedRegexMatcher),
-    FixedStrings(FixedStringsMatcher)
+    FixedStrings(FixedStringsMatcher),
 }
 impl Matcher {
     pub fn new(pattern: String, is_fixed_strings_mode: bool) -> Matcher {

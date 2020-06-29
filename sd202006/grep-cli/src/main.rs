@@ -1,6 +1,7 @@
 use clap::{crate_authors, crate_version, App, Arg};
-
-
+use std::io::Read;
+use std::fs::File;
+use std::path::Path;
 
 fn main() {
     let matches = App::new("grep")
@@ -23,7 +24,7 @@ fn main() {
                 .help("take PATTERNS from FILES")
                 .required(true)
                 .multiple(true)
-                .index(2)
+                .index(2),
         )
         .get_matches();
     let pattern = matches.value_of("PATTERNS").unwrap();
@@ -33,5 +34,24 @@ fn main() {
         .map(|x| x.to_string())
         .collect::<Vec<String>>();
     let is_fixed_string_mode = matches.is_present("fixed-strings");
-    println!("{:?}", matches)
+    println!("{:?}", matches);
+
+    for file_path in file_pathes {
+        let path = Path::new(&file_path);
+        let display = path.display();
+        let mut file = match File::open(&path) {
+            Err(why) => panic!("couldn't open {}: {}", display, why.to_string()),
+            Ok(file) => file,
+        };
+
+        let mut s = String::new();
+        match file.read_to_string(&mut s) {
+            Err(why) => panic!("couldn't read {}: {}", display, why.to_string()),
+            Ok(_) => {
+                for line in s.lines() {
+                    println!("{}", line);
+                }
+            }
+        }
+    }
 }

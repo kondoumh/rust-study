@@ -2,6 +2,12 @@ use clap::{crate_authors, crate_version, App, Arg};
 use std::fs::File;
 use std::io::Read;
 use std::path::Path;
+use grep_core::Matcher;
+
+pub struct GrepResult {
+    pub file_path: String,
+    pub hit_lines: Vec<String>
+}
 
 fn main() {
     let matches = App::new("grep")
@@ -36,9 +42,11 @@ fn main() {
     let is_fixed_string_mode = matches.is_present("fixed-strings");
     println!("{:?}", matches);
 
+    let mut results = vec![];
     for file_path in file_pathes {
         let path = Path::new(&file_path);
         let display = path.display();
+        
         let mut file = match File::open(&path) {
             Err(why) => panic!("couldn't open {}: {}", display, why.to_string()),
             Ok(file) => file,

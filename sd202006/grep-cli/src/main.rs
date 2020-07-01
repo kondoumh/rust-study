@@ -33,20 +33,26 @@ fn main() {
                 .index(2),
         )
         .get_matches();
+
     let pattern = matches.value_of("PATTERNS").unwrap();
     let file_pathes = matches
         .values_of("FILES")
         .unwrap()
         .map(|x| x.to_string())
         .collect::<Vec<String>>();
-    let is_fixed_string_mode = matches.is_present("fixed-strings");
+    let is_fixed_strings_mode = matches.is_present("fixed-strings");
     println!("{:?}", matches);
 
-    let mut results = vec![];
+    let matcher = Matcher::new(pattern.to_string(), is_fixed_strings_mode);
+
+    //let mut results = vec![];
     for file_path in file_pathes {
         let path = Path::new(&file_path);
         let display = path.display();
-        
+        let mut result = GrepResult {
+            file_path: file_path.clone(),
+            hit_lines: vec![],
+        };
         let mut file = match File::open(&path) {
             Err(why) => panic!("couldn't open {}: {}", display, why.to_string()),
             Ok(file) => file,
@@ -57,7 +63,10 @@ fn main() {
             Err(why) => panic!("couldn't read {}: {}", display, why.to_string()),
             Ok(_) => {
                 for line in s.lines() {
-                    println!("{}", line);
+                    if matcher.execute(line) {
+                        result.hit_lines.push(line.to_string());
+                        println!("{}", line);
+                    }
                 }
             }
         }

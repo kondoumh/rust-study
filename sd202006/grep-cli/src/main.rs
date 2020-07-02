@@ -41,11 +41,9 @@ fn main() {
         .map(|x| x.to_string())
         .collect::<Vec<String>>();
     let is_fixed_strings_mode = matches.is_present("fixed-strings");
-    println!("{:?}", matches);
-
     let matcher = Matcher::new(pattern.to_string(), is_fixed_strings_mode);
 
-    //let mut results = vec![];
+    let mut results = vec![];
     for file_path in file_pathes {
         let path = Path::new(&file_path);
         let display = path.display();
@@ -65,10 +63,29 @@ fn main() {
                 for line in s.lines() {
                     if matcher.execute(line) {
                         result.hit_lines.push(line.to_string());
-                        println!("{}", line);
                     }
                 }
             }
         }
+        results.push(Ok(result));
+    }
+
+    let mut errors = vec![];
+    for result in results {
+        match result {
+            Ok(result) => {
+                if result.hit_lines.len() > 0 {
+                    for line in result.hit_lines {
+                        println!("{}:{}", result.file_path, line);
+                    }
+                }
+            }
+            Err(e) => {
+                errors.push(e);
+            }
+        }
+    }
+    for e in errors {
+        println!("{}", e);
     }
 }

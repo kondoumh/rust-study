@@ -1,7 +1,8 @@
 use clap::{crate_authors, crate_version, App, Arg};
-use std::fs::File;
-use std::io::Read;
+use std::fs::{metadata, File};
 use std::path::Path;
+use std::thread;
+use std::io::prelude::*;
 use grep_core::Matcher;
 
 pub struct GrepResult {
@@ -43,45 +44,61 @@ fn main() {
     let is_fixed_strings_mode = matches.is_present("fixed-strings");
     let matcher = Matcher::new(pattern.to_string(), is_fixed_strings_mode);
 
-    let mut results = vec![];
+    let mut handles = vec![];
     for file_path in file_pathes {
-        let path = Path::new(&file_path);
-        let display = path.display();
-        let mut result = GrepResult {
-            file_path: file_path.clone(),
-            hit_lines: vec![],
-        };
-        let mut file = match File::open(&path) {
-            Err(why) => panic!("couldn't open {}: {}", display, why.to_string()),
-            Ok(file) => file,
-        };
+        let matcher = matcher.clone();
+        let handle = thread::spawn(move || {
+            let path = Path::new(&file_path);
+            let display = path.display();
+            let mut result = GrepResult {
+                file_path: file_path.clone(),
+                hit_lines: vec![],
+            };
+            match metadata(&path) {
+                Ok(md) => {
+                    if md.is_dir() {
+                        return Err(format!("{} is directory", display));
+                    }
+                }
+                Err(e) => {
+                    return Err(format!("{}: {}", e.to_string(), display));
+                }
+            }
+            let mut file = match File::open(&path) {
+                Err(why) => panic!("couldn't open {}: {}", display, why.to_string()),
+                Ok(file) => file,
+            };
 
-        let mut s = String::new();
-        match file.read_to_string(&mut s) {
-            Err(why) => panic!("couldn't read {}: {}", display, why.to_string()),
-            Ok(_) => {
-                for line in s.lines() {
-                    if matcher.execute(line) {
-                        result.hit_lines.push(line.to_string());
+            let mut s = String::new();
+            match file.read_to_string(&mut s) {
+                Err(why) => return Err(format!("couldn't read {}: {}", display, why.to_string())),
+                Ok(_) => {
+                    for line in s.lines() {
+                        if matcher.execute(line) {
+                            result.hit_lines.push(line.to_string());
+                        }
                     }
                 }
             }
-        }
-        results.push(Ok(result));
+            Ok(result)
+        });
+        handles.push(handle);
     }
 
     let mut errors = vec![];
-    for result in results {
-        match result {
-            Ok(result) => {
-                if result.hit_lines.len() > 0 {
-                    for line in result.hit_lines {
-                        println!("{}:{}", result.file_path, line);
+    for handle in handles {
+        if let Ok(result) = handle.join() {
+            match result {
+                Ok(result) => {
+                    if result.hit_lines.len() > 0 {
+                        for line in result.hit_lines {
+                            println!("{}:{}", result.file_path, line);
+                        }
                     }
                 }
-            }
-            Err(e) => {
-                errors.push(e);
+                Err(e) => {
+                    errors.push(e);
+                }
             }
         }
     }

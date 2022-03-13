@@ -4,12 +4,12 @@ import init from "./pkg/hello_wasm.js";
 
 const runWasm = async () => {
   // Instantiate our wasm module
-  const helloWorld = await init("./pkg/hello_wasm_bg.wasm");
+  const helloWasm = await init("./pkg/hello_wasm_bg.wasm");
 
   // Call the Add function export from wasm, save the result
-  const addResult = helloWorld.add(24, 24);
+  const addResult = helloWasm.add(24, 24);
 
   // Set the result onto the body
-  document.body.textContent = `Hello World! addResult: ${addResult}`;
+  document.body.textContent = `Hello Wasm! addResult: ${addResult}`;
 };
 runWasm();

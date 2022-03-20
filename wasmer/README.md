@@ -42,3 +42,46 @@ source /Users/masahiro-kondo/.wasmer/wasmer.sh
 
 $ source ~/.wasmer/wasmer.sh
 ```
+
+## Use wapm
+
+```
+$ wapm install cowsay
+[INFO] Installing syrusakbary/cowsay@0.2.0
+Package installed successfully to wapm_packages!
+
+$ wapm run cowsay hello wapm!
+ _____________
+< hello wapm! >
+ -------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+               ||----w |
+                ||     ||
+
+$ wapm install saghul/quickjs
+[INFO] Installing saghul/quickjs@0.0.3
+Package installed successfully to wapm_packages!
+
+$ wapm run quickjs
+QuickJS - Type "\h" for help
+qjs > [1,2,3,4].map(x => x*x)
+[1,2,3,4].map(x => x*x)
+[ 1, 4, 9, 16 ]
+qjs > 
+```
+
+## Use wax
+
+```
+$ wax cowsay hello          
+ _______
+< hello >
+ -------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+               ||----w |
+                ||     ||
+```

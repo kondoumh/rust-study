@@ -5,7 +5,7 @@
     "build-wasm-webpack": "wasm-pack build --target bundler --out-dir pkg"
   },
   "devDependencies": {
-    "webpack": "^5.94.0",
+    "webpack": "^5.105.2",
     "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^5.2.1"
   }
